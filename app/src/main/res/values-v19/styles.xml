@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="DT_AppTheme" parent="DT_BaseAppTheme">
+        <!--设置为true，意味着xml布局延伸到状态栏-->
+        <item name="android:windowTranslucentStatus">true</item>
+        <!--是否延伸到导航栏导航栏-->
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+</resources>

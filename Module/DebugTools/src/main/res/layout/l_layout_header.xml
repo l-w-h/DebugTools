@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+
+    <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="debug tools"
+            android:textSize="@dimen/sp_18"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:paddingTop="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.lwh.debugtools.base.view.textview.IconTextView
+            android:id="@+id/tv_return"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/icon_return"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="@dimen/sp_24" />
+
+    <com.lwh.debugtools.base.view.textview.IconTextView
+            android:id="@+id/tv_func_a"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/icon_delete"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="@dimen/sp_24"
+            android:visibility="gone" />
+
+    <com.lwh.debugtools.base.view.textview.IconTextView
+            android:id="@+id/tv_func_b"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintEnd_toStartOf="@id/tv_func_a"
+            android:text="@string/icon_search"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="@dimen/sp_24"
+            android:visibility="gone" />
+</androidx.constraintlayout.widget.ConstraintLayout>

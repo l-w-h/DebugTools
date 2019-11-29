@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="icon_return">&#xe6d0;</string>
+    <string name="icon_search">&#xe6d1;</string>
+    <string name="icon_copy">&#xe6d2;</string>
+    <string name="icon_delete">&#xe6d3;</string>
+    <string name="icon_net_work">&#xe6d4;</string>
+    <string name="icon_bug">&#xe6d5;</string>
+    <string name="icon_log">&#xe6d6;</string>
+
+
+</resources>

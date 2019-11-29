@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="IconTextView">
+        <attr name="fontPath" format="string"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="StatusBarView">
+        <!--状态栏类型-->
+        <attr name="statusBarType" format="enum">
+            <enum name="VERTICAL" value="0x000000"/>
+            <enum name="HORIZONTAL" value="0x000001"/>
+            <enum name="ALL" value="0x000002"/>
+        </attr>
+        <!--折叠状态-->
+        <attr name="foldStatus" format="enum">
+            <!--展开-->
+            <enum name="EXPAND" value="0x000000"/>
+            <!--折叠-->
+            <enum name="COLLAPSE" value="0x000001"/>
+        </attr>
+    </declare-styleable>
+</resources>

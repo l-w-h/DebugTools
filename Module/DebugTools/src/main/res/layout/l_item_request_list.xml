@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:background="@drawable/l_item_white_bg"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp">
+
+        <TextView
+                android:id="@+id/tv_method"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="post"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                />
+
+        <TextView
+                android:id="@+id/tv_host"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="https://wap.cwhisky.com/"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/tv_method"
+                app:layout_constraintTop_toTopOf="@id/tv_method"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                />
+
+        <TextView
+                android:id="@+id/tv_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="200"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@id/tv_method"
+                app:layout_constraintTop_toBottomOf="@id/tv_method"
+                />
+
+        <TextView
+                android:id="@+id/tv_path"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="/v340/cwhisky-jp-app-api/app/homepage/getAdvert"
+                android:textSize="12sp"
+                android:singleLine="true"
+                android:ellipsize="start"
+                app:layout_constraintStart_toEndOf="@id/tv_method"
+                app:layout_constraintTop_toBottomOf="@id/tv_host"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                />
+
+        <TextView
+                android:id="@+id/tv_start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="2019-10-01 17:14:19"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@id/tv_method"
+                app:layout_constraintTop_toBottomOf="@id/tv_code"
+
+                />
+
+        <TextView
+                android:id="@+id/tv_time_consuming"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="30ms"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/tv_start_time"
+                app:layout_constraintTop_toBottomOf="@id/tv_path"
+                app:layout_constraintEnd_toStartOf="@id/tv_content_length"
+                android:layout_marginStart="16dp"
+                />
+
+        <TextView
+                android:id="@+id/tv_content_length"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="1000b"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@id/tv_path"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                />
+
+        <TextView
+                android:id="@+id/tv_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="!"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/red"
+                app:layout_constraintStart_toEndOf="@id/tv_host"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_host"
+                android:layout_marginStart="4dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

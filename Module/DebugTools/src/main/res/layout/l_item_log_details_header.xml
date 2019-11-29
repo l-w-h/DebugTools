@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <View
+            android:id="@+id/bg_view_a"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_0"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:background="@drawable/l_item_white_bg"
+            app:layout_constraintBottom_toBottomOf="@id/tv_type"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_location" />
+
+    <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_16"
+            android:textSize="@dimen/sp_14"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/bg_view_a"
+            app:layout_constraintStart_toStartOf="@id/bg_view_a"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="com.lwh.debug.activity.DebugActivity.kt(20)"
+            android:textIsSelectable="true" />
+
+    <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:paddingBottom="@dimen/dp_16"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintStart_toStartOf="@id/tv_location"
+            app:layout_constraintTop_toBottomOf="@id/tv_location"
+            tools:text="Info" />
+
+    <TextView
+            android:id="@+id/tv_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="DebugViewTag"
+            app:layout_constraintStart_toEndOf="@id/tv_type"
+            app:layout_constraintTop_toTopOf="@id/tv_type"
+            app:layout_constraintEnd_toStartOf="@id/tv_date" />
+
+    <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintEnd_toEndOf="@id/bg_view_a"
+            app:layout_constraintTop_toTopOf="@id/tv_type"
+            tools:text="2019-09-23 18:28:28:475"
+            android:layout_marginEnd="@dimen/dp_16" />
+</androidx.constraintlayout.widget.ConstraintLayout>

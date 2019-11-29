@@ -1,0 +1,27 @@
+<resources>
+
+    <style name="DT_BaseAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+
+        <!-- 主题颜色 -->
+        <item name="colorPrimary">@color/white</item>
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/gray</item>
+        <item name="windowActionBarOverlay">true</item>
+        <!-- 隐藏状态栏 -->
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:configChanges">orientation|screenSize</item>
+    </style>
+
+    <style name="DT_AppTheme" parent="DT_BaseAppTheme"></style>
+
+    <!--透明，有任务栏电量时间等-->
+    <style name="NoTitleTranslucentTheme" parent="DT_AppTheme">
+        <item name="android:windowBackground">@color/translate</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+</resources>

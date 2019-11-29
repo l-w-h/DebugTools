@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.lwh.debugtools">
+
+    <application>
+        <activity
+                android:name=".crash.DefaultErrorActivity"
+                android:process=":error_activity" />
+        <activity android:name=".ui.activity.error.DTErrorDetailsActivity" />
+        <activity android:name=".ui.activity.log.DTLogDetailsActivity" />
+        <activity android:name=".ui.activity.request.DTRequestDetailsActivity" />
+        <activity android:name=".ui.activity.home.DTHomeActivity"></activity>
+
+        <provider
+                android:name=".crash.CrashInitProvider"
+                android:authorities="${applicationId}.customactivityoncrashinitprovider"
+                android:exported="false"
+                android:initOrder="101" />
+
+    </application>
+
+</manifest>

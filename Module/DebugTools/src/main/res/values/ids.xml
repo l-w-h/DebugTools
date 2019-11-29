@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--默认跟布局 id-->
+    <item name="root_view" type="id"/>
+    <!--默认recyclerView id-->
+    <item name="recyclerView" type="id"/>
+    <!--默认StickyHeaderLayout id-->
+    <item name="stickyHeaderLayout" type="id"/>
+    <!--默认刷新layout id-->
+    <item name="refreshLayout" type="id"/>
+    <!--默认Header View id-->
+    <item name="header_view" type="id"/>
+    <!--默认Body View id-->
+    <item name="body_view" type="id"/>
+    <!--默认Footer View id-->
+    <item name="footer_view" type="id"/>
+    <!--默认adapter tag存储item数据id-->
+    <item name="adapter_item" type="id"/>
+    <!--自定义状态栏-->
+    <item name="status_bar_view" type="id"/>
+</resources>

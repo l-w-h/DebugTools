@@ -25,6 +25,6 @@ class App : Application() {
                     |${throwable.message}""".trimMargin(),Toast.LENGTH_SHORT).show()
             }
 
-        })
+        }).addIgnoreUrl("app/system/downApk")
     }
 }

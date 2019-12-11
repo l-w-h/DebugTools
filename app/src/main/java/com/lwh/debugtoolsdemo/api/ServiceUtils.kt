@@ -39,7 +39,7 @@ object ServiceUtils {
 
     private fun initOkHttpClient(url: String): OkHttpClient {
         val httpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
-        httpClientBuilder.addInterceptor(DebugTools.getInstance().getRecordInterceptor())
+        httpClientBuilder.addNetworkInterceptor(DebugTools.getInstance().getRecordInterceptor())
             .connectTimeout(5, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
 

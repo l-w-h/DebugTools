@@ -13,6 +13,8 @@ import android.util.Log
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.RestrictTo
+import com.lwh.debugtools.db.DatabaseUtils
+import com.lwh.debugtools.db.table.ErrorTable
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.lang.ref.WeakReference
@@ -335,17 +337,18 @@ object CustomActivityOnCrash {
     @NonNull
     fun getAllErrorDetailsFromIntent(@NonNull context: Context, @NonNull intent: Intent): String {
         //I don't think that this needs localization because it's a development string...
-//        val errorTable: ErrorTable = ErrorTable()
-//        errorTable.crashDate = System.currentTimeMillis()
+        val errorTable = ErrorTable()
+        errorTable.state = 0
+        errorTable.crashDate = System.currentTimeMillis()
         val currentDate = Date()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS", Locale.US)
 
         //Get build date
         val buildDateAsString = getBuildDateAsString(context, dateFormat)
-//        errorTable.buildDate = buildDateAsString
+        errorTable.buildDate = buildDateAsString
         //Get app version
         val versionName = getVersionName(context)
-//        errorTable.buildVersion = versionName
+        errorTable.buildVersion = versionName
 
         var errorDetails = ""
 
@@ -359,17 +362,17 @@ object CustomActivityOnCrash {
         //We should move it to a method that returns a bean, and let anyone format it as they wish.
         val device = getDeviceModelName()
         errorDetails += "Device: $device \n \n"
-//        errorTable.device = device
+        errorTable.device = device
         val throwable = getThrowableFromIntent(intent)
-//        errorTable.throwable = throwable
+        errorTable.throwable = throwable
         errorDetails += "Stack trace:  \n"
         val stackTrace = getStackTraceFromIntent(intent)
         errorDetails += stackTrace
-//        errorTable.stack = stackTrace
+        errorTable.stack = stackTrace
 
         val activityLog = getActivityLogFromIntent(intent)
-//        errorTable.userActions = activityLog
-//        val id = DatabaseUtils.putError(errorTable)
+        errorTable.userActions = activityLog
+        val id = DatabaseUtils.putError(errorTable)
 
         if (activityLog != null) {
             errorDetails += "\nUser actions: \n"
@@ -482,7 +485,9 @@ object CustomActivityOnCrash {
      */
     @Nullable
     fun getBuildDateAsString(@NonNull context: Context, @NonNull dateFormat: DateFormat): String? {
-        var buildDate: Long
+        val pi = context.packageManager.getPackageInfo(context.packageName, 0)
+        return dateFormat.format(Date(pi.lastUpdateTime))
+     /*   var buildDate: Long
         try {
             val ai = context.packageManager.getApplicationInfo(context.packageName, 0)
             val zf = ZipFile(ai.sourceDir)
@@ -501,7 +506,7 @@ object CustomActivityOnCrash {
             dateFormat.format(Date(buildDate))
         } else {
             null
-        }
+        }*/
     }
 
     /**

@@ -56,6 +56,11 @@ class DebugTools private constructor() {
          */
         var open = false
 
+        /**
+         * 忽略不拦截url
+         */
+        val ignoreUrls = ArrayList<String>()
+
         fun getInstance(application: Application = context): DebugTools {
             if (INSTANCE == null) {
                 this.context = application
@@ -127,7 +132,8 @@ class DebugTools private constructor() {
     fun initCrash(
         restartActivityClass: Class<out Activity>
     ): DebugTools {
-        initCrash(BACKGROUND_MODE_SILENT,
+        initCrash(
+            //BACKGROUND_MODE_SILENT,
             true,
             true,
             true,
@@ -144,7 +150,7 @@ class DebugTools private constructor() {
      * 初始化异常监听捕获
      */
     fun initCrash(
-        @CrashConfig.BackgroundMode backgroundMode: Int = BACKGROUND_MODE_SILENT,
+       // @CrashConfig.BackgroundMode backgroundMode: Int = BACKGROUND_MODE_SILENT,
         enabled: Boolean = true,
         showErrorDetails: Boolean = true,
         showRestartButton: Boolean = true,
@@ -156,7 +162,7 @@ class DebugTools private constructor() {
         eventListener: CrashConfig.EventListener? = null
     ): DebugTools {
         val builder: CrashConfig.Builder = CrashConfig.Builder.create()
-            .backgroundMode(backgroundMode) //背景模式,开启沉浸式
+            .backgroundMode(BACKGROUND_MODE_SILENT) //背景模式,开启沉浸式
             .enabled(enabled) //是否启动全局异常捕获
             .showErrorDetails(showErrorDetails) //是否显示错误详细信息
             .showRestartButton(showRestartButton) //是否显示重启按钮
@@ -214,7 +220,7 @@ class DebugTools private constructor() {
     /**
      * 添加view到页面
      */
-    fun addViewToWindow(): DebugTools {
+    private fun addViewToWindow(): DebugTools {
         FloatingView.get().add()
         return this
     }
@@ -227,21 +233,21 @@ class DebugTools private constructor() {
         return this
     }
 
-    /**
-     * 是否是授权页面
-     */
-    private fun isAuthorizePage(context: Context): Boolean {
-//        return context is FloatingWindowPermissionActivity
-        return false
-    }
-
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="网络">
     /**
      * 获取网络拦截器
      */
-    public fun getRecordInterceptor(): Interceptor = RecordInterceptor(context)
+    fun getRecordInterceptor(): Interceptor = RecordInterceptor(context)
+
+    /**
+     * 添加忽略url
+     */
+    fun addIgnoreUrl(url:String): DebugTools{
+        ignoreUrls.add(url)
+        return this
+    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="log">

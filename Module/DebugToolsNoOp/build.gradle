@@ -34,13 +34,30 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+
     implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    api 'org.jetbrains.kotlin:kotlin-stdlib:1.3.31'
+    api 'org.jetbrains.anko:anko-sqlite:0.10.8'
+
+    //上拉自动加载，下拉刷新
+    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-16'
     //okhttp3
     api 'com.squareup.okhttp3:okhttp:3.8.1'
+    api 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    // retrofit
+    api 'com.squareup.retrofit2:retrofit:2.3.0'
+    api 'com.squareup.retrofit2:converter-gson:2.3.0'
+    api('com.squareup.retrofit2:adapter-rxjava:2.3.0', {
+        exclude group: 'com.google.guava'
+        exclude group: 'com.google.code.findbugs'
+    })
+    api 'io.reactivex:rxandroid:1.0.1'
+    //gson
+    api 'com.google.code.gson:gson:2.8.1'
 }
 
 

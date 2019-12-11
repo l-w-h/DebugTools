@@ -17,7 +17,7 @@ object ErrorTableField : BaseTableField() {
     const val BUILD_VERSION = "buildVersion"
 
     /**
-     *
+     * apk最后更新时间
      */
     const val BUILD_DATE = "buildDate"
 

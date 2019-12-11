@@ -1,7 +1,6 @@
 package com.lwh.debugtoolsdemo.api
 
 import retrofit2.http.GET
-import retrofit2.http.HeaderMap
 import rx.Observable
 
 /**

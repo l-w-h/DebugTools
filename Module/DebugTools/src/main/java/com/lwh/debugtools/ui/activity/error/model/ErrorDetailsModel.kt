@@ -26,22 +26,22 @@ class ErrorDetailsModel : BaseModelImpl(){
                 val groupItem = BaseGroupItem()
                 data.add(groupItem)
                 groupItem.headerItem = ItemErrorDetailsHeader(ItemErrorDetailsHeaderModel(it))
-                it.stack?.let { stack ->
-                    groupItem.children.add(
-                        ItemCommonDetailsBody(
-                            ItemCommonDetailsBodyModel(
-                                "Stack",
-                                stack
+                if (!it.stack.isNullOrBlank()) {
+                        groupItem.children.add(
+                            ItemCommonDetailsBody(
+                                ItemCommonDetailsBodyModel(
+                                    "Stack",
+                                    it.stack
+                                )
                             )
                         )
-                    )
                 }
-                it.userActions?.let { userActions ->
+                if (!it.userActions.isNullOrBlank()) {
                     groupItem.children.add(
                         ItemCommonDetailsBody(
                             ItemCommonDetailsBodyModel(
                                 "UserActions",
-                                userActions
+                                it.userActions
                             )
                         )
                     )

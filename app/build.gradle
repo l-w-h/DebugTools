@@ -37,21 +37,23 @@ dependencies {
 
 
     //okhttp3
-    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
-    // retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation('com.squareup.retrofit2:adapter-rxjava:2.3.0', {
-        exclude group: 'com.google.guava'
-        exclude group: 'com.google.code.findbugs'
-    })
-    implementation 'io.reactivex:rxandroid:1.0.1'
-    //gson
-    implementation 'com.google.code.gson:gson:2.8.1'
-    //上拉自动加载，下拉刷新
-    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-16'
+//    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+//    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+//    // retrofit
+//    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+//    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+//    implementation('com.squareup.retrofit2:adapter-rxjava:2.3.0', {
+//        exclude group: 'com.google.guava'
+//        exclude group: 'com.google.code.findbugs'
+//    })
+//    implementation 'io.reactivex:rxandroid:1.0.1'
+//    //gson
+//    implementation 'com.google.code.gson:gson:2.8.1'
+//    //上拉自动加载，下拉刷新
+//    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-16'
 
+//    debugImplementation ("com.lwh.debug:DebugTools:2.1.6")
+//    releaseImplementation ("com.lwh.debug:DebugToolsNoOp:2.1.6")
     debugImplementation project(":Module:DebugTools")
     releaseImplementation project(":Module:DebugToolsNoOp")
 

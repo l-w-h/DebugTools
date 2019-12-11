@@ -150,6 +150,13 @@ class DebugTools private constructor() {
      * 获取网络拦截器
      */
     public fun getRecordInterceptor(): Interceptor = RecordInterceptor(context)
+
+    /**
+     * 添加忽略url
+     */
+    fun addIgnoreUrl(url:String): DebugTools{
+        return this
+    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="log">

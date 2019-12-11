@@ -113,7 +113,7 @@ class StatusBarView : View {
         animation.startDelay = animationDuration / 2
         animation.addUpdateListener {
             val value = animation.animatedValue as Float
-            Log.i("TAG", "value:$value")
+//            Log.i("TAG", "value:$value")
             refreshLayout(value.toInt())
         }
         animation.start()

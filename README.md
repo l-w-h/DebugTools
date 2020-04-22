@@ -5,8 +5,8 @@
 # 使用方法
 
 ### 1.添加依赖
-    debugImplementation project("com.lwh.debug:DebugTools:DebugTools:2.1.8")
-    releaseImplementation project("com.lwh.debug:DebugTools:DebugToolsNoOp:2.1.8")
+    debugImplementation project("com.lwh.debug:DebugTools:DebugTools:2.1.9")
+    releaseImplementation project("com.lwh.debug:DebugTools:DebugToolsNoOp:2.1.9")
 
 ### 2.添加代码
 
@@ -54,6 +54,6 @@
   |attachDebugView|activity：当前显示页面|手动添加DebugView|
   |detachDebugView|activity：当前显示页面|手动移除DebugView|
   |setDebugViewListener|magnetViewListener：DebugView点击移除监听，默认实现|设置DebugView点击移除监听|
-  |getRecordInterceptor|无|获取网络拦截器|
+  |getRecordInterceptor|callback：提供解密body方法，默认无|获取网络拦截器|
   |addIgnoreUrl|url:需要忽略拦截的url，例如下载文件的url需要忽略，否在可能卡死|添加忽略url|
   |logV，logD，logI<br>logW，logE|tag：tag<br>content：内容<br>jumpStack：储存打印数据时，获取当前调用任务堆栈信息，需要跳过的堆栈数|将调试log保存到log列表|

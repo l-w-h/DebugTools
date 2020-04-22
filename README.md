@@ -5,8 +5,8 @@
 # 使用方法
 
 ### 1.添加依赖
-    debugImplementation project("com.lwh.debug:DebugTools:DebugTools:2.1.9")
-    releaseImplementation project("com.lwh.debug:DebugTools:DebugToolsNoOp:2.1.9")
+    debugImplementation "com.lwh.debug:DebugTools:DebugTools:2.1.9@aar"
+    releaseImplementation "com.lwh.debug:DebugTools:DebugToolsNoOp:2.1.9@aar"
 
 ### 2.添加代码
 

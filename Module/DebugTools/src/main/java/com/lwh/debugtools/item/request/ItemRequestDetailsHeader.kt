@@ -23,11 +23,12 @@ class ItemRequestDetailsHeader(private val model: ItemRequestDetailsHeaderModel)
     override fun updateView(holder: BaseViewHolder, position: Int) {
         val view = holder.itemView
         view.tv_url.text = model.url
-        view.tv_method.text = model.method
-        view.tv_time_consuming.text = model.getTimeConsumingStr()
-        view.tv_content_length.text = model.getContentLengthStr()
-        view.tv_code.text = model.getCodeStr()
-        view.tv_media_type.text = model.mediaType
+        view.tv_method.text = "Method:${model.method}"
+        view.tv_time_consuming.text = "Time:${model.getTimeConsumingStr()}"
+        view.tv_content_length.text = "ContentLength:${model.getContentLengthStr()}"
+        view.tv_decrypt_content_length.text = if (model.decryptContentLength == null || model.decryptContentLength == 0L) "" else "DecryptContentLength:${model.getDecryptContentLengthStr()}"
+        view.tv_code.text = "Code:${model.getCodeStr()}"
+        view.tv_media_type.text = "MediaType:${model.mediaType}"
         view.tv_url.setOnClickListener(onClick)
     }
 

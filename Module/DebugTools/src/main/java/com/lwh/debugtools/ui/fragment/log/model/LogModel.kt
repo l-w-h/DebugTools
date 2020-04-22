@@ -1,6 +1,7 @@
 package com.lwh.debugtools.ui.fragment.log.model
 
 import com.lwh.debugtools.base.mvp.BaseModelImpl
+import com.lwh.debugtools.base.thread.ThreadUtil
 import com.lwh.debugtools.bean.PaginationBean
 import com.lwh.debugtools.db.DatabaseUtils
 import com.lwh.debugtools.db.table.LogTable
@@ -13,7 +14,11 @@ import com.lwh.debugtools.db.table.LogTable
 class LogModel : BaseModelImpl() {
 
     fun loadData(page: Int, pageSize: Int, success: (PaginationBean<LogTable>) -> Unit) {
-        val paginationBean: PaginationBean<LogTable> = DatabaseUtils.getLogs(page, pageSize)
-        success(paginationBean)
+        ThreadUtil.queueWork(Runnable {
+            val paginationBean: PaginationBean<LogTable> = DatabaseUtils.getLogs(page, pageSize)
+            ThreadUtil.runMain {
+                success(paginationBean)
+            }
+        })
     }
 }

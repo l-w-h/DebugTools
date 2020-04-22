@@ -118,7 +118,10 @@ fun SQLiteDatabase.insertRequestTable(requestTable: RequestTable): Long {
             Pair(RequestTableField.CODE, requestTable.code),
             Pair(RequestTableField.SENT_REQUEST_AT_MILLIS, requestTable.sentRequestAtMillis),
             Pair(RequestTableField.RECEIVED_RESPONSE_AT_MILLIS, requestTable.receivedResponseAtMillis),
-            Pair(RequestTableField.ERROR_MESSAGE, requestTable.errorMessage)
+            Pair(RequestTableField.ERROR_MESSAGE, requestTable.errorMessage),
+            Pair(RequestTableField.DECRYPT_CONTENT_LENGTH, requestTable.decryptContentLength),
+            Pair(RequestTableField.DECRYPT_REQUEST_BODY, requestTable.decryptRequestBody),
+            Pair(RequestTableField.DECRYPT_RESPONSE_BODY, requestTable.decryptResponseBody)
         )
     }
 }

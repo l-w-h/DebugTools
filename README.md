@@ -5,8 +5,8 @@
 # 使用方法
 
 ### 1.添加依赖
-    debugImplementation project("com.lwh.debug:DebugTools:DebugTools:2.1.6")
-    releaseImplementation project("com.lwh.debug:DebugTools:DebugToolsNoOp:2.1.6")
+    debugImplementation project("com.lwh.debug:DebugTools:DebugTools:2.1.8")
+    releaseImplementation project("com.lwh.debug:DebugTools:DebugToolsNoOp:2.1.8")
 
 ### 2.添加代码
 
@@ -29,7 +29,15 @@
     
     ```
         val httpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
-        httpClientBuilder.addNetworkInterceptor(DebugTools.getInstance().getRecordInterceptor())
+        httpClientBuilder.addNetworkInterceptor(DebugTools.getInstance().getRecordInterceptor(object :RecordInterceptor.OnDecryptCallback{
+                    override fun onRequestBodyDecrypt(body: String): String {
+                        return "request body 解密数据"
+                    }
+
+                    override fun onResponseBodyDecrypt(body: String?): String? {
+                        return "response body 解密数据"
+                    }
+                }))
     ```
 
 ### 3. DebugTools API

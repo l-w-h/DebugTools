@@ -1,6 +1,7 @@
 package com.lwh.debugtoolsdemo.api
 
 import com.lwh.debugtools.DebugTools
+import com.lwh.debugtools.interceptor.RecordInterceptor
 import okhttp3.CipherSuite
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
@@ -25,7 +26,7 @@ import javax.net.ssl.X509TrustManager
  */
 object ServiceUtils {
 
-    val BASE_URL = "https://m.weibo.cn/";
+    val BASE_URL = "http://wap-pre.cwhisky.com/#";
     private val HTTP_CLIENT = initOkHttpClient(BASE_URL)
 
     fun <T> getApi(clazz:Class<T>): T{
@@ -39,7 +40,15 @@ object ServiceUtils {
 
     private fun initOkHttpClient(url: String): OkHttpClient {
         val httpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
-        httpClientBuilder.addNetworkInterceptor(DebugTools.getInstance().getRecordInterceptor())
+        httpClientBuilder.addNetworkInterceptor(DebugTools.getInstance().getRecordInterceptor(object :RecordInterceptor.OnDecryptCallback{
+            override fun onRequestBodyDecrypt(body: String): String {
+                return "request body 解密数据"
+            }
+
+            override fun onResponseBodyDecrypt(body: String?): String? {
+                return "response body 解密数据"
+            }
+        }))
             .connectTimeout(5, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
 

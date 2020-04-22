@@ -41,6 +41,22 @@ class RequestDetailsModel : BaseModelImpl() {
                         )
                         else -> PROMPT
                     }
+                val decryptRequestBodyJson =
+                    when {
+                        it.decryptRequestBody == null -> ""
+                        it.decryptRequestBody!!.toByteArray().size < 100 * 1024 -> JsonUtils.stringToJSON(
+                            it.decryptRequestBody
+                        )
+                        else -> PROMPT
+                    }
+                val decryptResponseBodyJson =
+                    when {
+                        it.decryptResponseBody == null -> ""
+                        it.decryptResponseBody!!.toByteArray().size < 100 * 1024 -> JsonUtils.stringToJSON(
+                            it.decryptResponseBody
+                        )
+                        else -> PROMPT
+                    }
                 data.clear()
                 val groupItem = BaseGroupItem()
                 data.add(groupItem)
@@ -66,6 +82,16 @@ class RequestDetailsModel : BaseModelImpl() {
                         )
                     )
                 }
+                if (!TextUtils.isEmpty(decryptRequestBodyJson)) {
+                    groupItem.children.add(
+                        ItemCommonDetailsBody(
+                            ItemCommonDetailsBodyModel(
+                                "Decrypt Request Body",
+                                decryptRequestBodyJson
+                            )
+                        )
+                    )
+                }
                 if (!TextUtils.isEmpty(it.responseHeader)) {
                     groupItem.children.add(
                         ItemCommonDetailsBody(
@@ -82,6 +108,17 @@ class RequestDetailsModel : BaseModelImpl() {
                             ItemCommonDetailsBodyModel(
                                 "Response Body",
                                 responseBodyJson
+                            )
+                        )
+                    )
+                }
+
+                if (!TextUtils.isEmpty(decryptResponseBodyJson)) {
+                    groupItem.children.add(
+                        ItemCommonDetailsBody(
+                            ItemCommonDetailsBodyModel(
+                                "Decrypt Response Body",
+                                decryptResponseBodyJson
                             )
                         )
                     )

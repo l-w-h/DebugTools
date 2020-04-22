@@ -1,92 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <View
-            android:id="@+id/bg_view_a"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/l_item_white_bg"
-            app:layout_constraintBottom_toBottomOf="@id/tv_media_type"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_url" />
+        android:id="@+id/bg_view_a"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/l_item_white_bg"
+        app:layout_constraintBottom_toBottomOf="@id/tv_media_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_url" />
 
     <TextView
-            android:id="@+id/tv_url"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:paddingTop="16dp"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/bg_view_a"
-            app:layout_constraintStart_toStartOf="@id/bg_view_a"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="https://wap.cwhisky.com/......"
-            android:textIsSelectable="true"
-            />
+        android:id="@+id/tv_url"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:paddingTop="16dp"
+        android:textIsSelectable="true"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/bg_view_a"
+        app:layout_constraintStart_toStartOf="@id/bg_view_a"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="https://wap.cwhisky.com/......" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".5" />
 
     <TextView
-            android:id="@+id/tv_method"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@id/tv_url"
-            app:layout_constraintTop_toBottomOf="@id/tv_url"
-            tools:text="POST"
-            />
+        android:id="@+id/tv_method"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@id/tv_url"
+        app:layout_constraintTop_toBottomOf="@id/tv_url"
+        tools:text="Method:POST" />
 
     <TextView
-            android:id="@+id/tv_time_consuming"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@id/tv_content_length"
-            app:layout_constraintStart_toEndOf="@id/tv_method"
-            app:layout_constraintTop_toTopOf="@id/tv_method"
-            tools:text="43ms"
-            />
+        android:id="@+id/tv_time_consuming"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/tv_code"
+        app:layout_constraintStart_toEndOf="@id/tv_method"
+        app:layout_constraintTop_toTopOf="@id/tv_method"
+        tools:text="Time:43ms" />
 
     <TextView
-            android:id="@+id/tv_content_length"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@id/tv_url"
-            app:layout_constraintTop_toTopOf="@id/tv_method"
-            tools:text="32b"
-            />
+        android:id="@+id/tv_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/tv_url"
+        app:layout_constraintTop_toTopOf="@id/tv_method"
+        tools:text="Code:200" />
+
 
     <TextView
-            android:id="@+id/tv_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@id/tv_url"
-            app:layout_constraintTop_toBottomOf="@id/tv_method"
-            tools:text="200"
-            />
+        android:id="@+id/tv_content_length"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@id/tv_url"
+        app:layout_constraintTop_toBottomOf="@id/tv_method"
+        tools:text="ContentLength:32b" />
 
     <TextView
-            android:id="@+id/tv_media_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@id/tv_url"
-            app:layout_constraintTop_toTopOf="@id/tv_code"
-            tools:text="json"
-            />
+        android:id="@+id/tv_decrypt_content_length"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/tv_url"
+        app:layout_constraintTop_toTopOf="@id/tv_content_length"
+        tools:text="DecryptContentLength:32b" />
+
+    <TextView
+        android:id="@+id/tv_media_type"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/tv_url"
+        app:layout_constraintStart_toStartOf="@id/tv_url"
+        app:layout_constraintTop_toBottomOf="@id/tv_content_length"
+        tools:text="MediaType:json" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

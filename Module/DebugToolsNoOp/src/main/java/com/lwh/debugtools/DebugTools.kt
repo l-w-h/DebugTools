@@ -152,6 +152,11 @@ class DebugTools private constructor() {
     public fun getRecordInterceptor(): Interceptor = RecordInterceptor(context)
 
     /**
+     * 获取网络拦截器
+     */
+    fun getRecordInterceptor(callback: RecordInterceptor.OnDecryptCallback?): Interceptor = RecordInterceptor(context,callback)
+
+    /**
      * 添加忽略url
      */
     fun addIgnoreUrl(url:String): DebugTools{

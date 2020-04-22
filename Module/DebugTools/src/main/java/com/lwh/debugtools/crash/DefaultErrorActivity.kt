@@ -3,9 +3,11 @@ package com.lwh.debugtools.crash
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
-import com.lwh.debugtools.base.ui.HeaderFooterActivity
 import com.lwh.debugtools.R
+import com.lwh.debugtools.base.ui.HeaderFooterActivity
 import kotlinx.android.synthetic.main.l_activity_default_error.*
 
 /**
@@ -49,23 +51,24 @@ class DefaultErrorActivity : HeaderFooterActivity() {
         if (config.isShowErrorDetails()) {
             tv_error_info.setOnClickListener {
                 //We retrieve all the error data and show it
-//                val confirmScrollPopup = ConfirmScrollPopup(this)
-//                confirmScrollPopup.setTitleContent(
-//                    getString(R.string.customactivityoncrash_error_activity_error_details_title),
-//                    errorMessage
-//                )
-//                    .setConfirmText(getString(R.string.customactivityoncrash_error_activity_error_details_copy))
-//                    .setCancelText(getString(R.string.customactivityoncrash_error_activity_error_details_close))
-//                    .setListener(OnConfirmListener {
-//                        copyErrorToClipboard(errorMessage)
-//                        Toast.makeText(
-//                            this@DefaultErrorActivity,
-//                            R.string.customactivityoncrash_error_activity_error_details_copied,
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }, null)
-//                XPopup.Builder(this).dismissOnTouchOutside(true)
-//                    .asCustom(confirmScrollPopup).show()
+                val alertDialog: AlertDialog = AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.customactivityoncrash_error_activity_error_details_title))
+                    .setMessage(errorMessage)
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.customactivityoncrash_error_activity_error_details_copy)) { _, _ ->
+                        copyErrorToClipboard(errorMessage)
+                        Toast.makeText(
+                            this@DefaultErrorActivity,
+                            R.string.customactivityoncrash_error_activity_error_details_copied,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }.setNegativeButton(
+                        getString(R.string.customactivityoncrash_error_activity_error_details_close),
+                        null
+                    )
+                    .create()
+                alertDialog.show()
+
             }
         } else {
             tv_error_info.visibility = View.GONE

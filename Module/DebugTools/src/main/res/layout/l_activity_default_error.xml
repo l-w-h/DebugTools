@@ -45,11 +45,11 @@
 
             <Button
                     android:id="@+id/tv_error_info"
-                    style="?borderlessButtonStyle"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/customactivityoncrash_error_activity_error_details"
-                    android:textColor="?colorPrimary" />
+                    android:textColor="@color/black" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

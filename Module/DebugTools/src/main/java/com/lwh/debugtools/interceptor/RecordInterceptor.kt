@@ -5,10 +5,7 @@ import android.util.Log
 import com.lwh.debugtools.DebugTools
 import com.lwh.debugtools.db.DatabaseUtils
 import com.lwh.debugtools.db.table.RequestTable
-import okhttp3.Interceptor
-import okhttp3.Request
-import okhttp3.Response
-import okhttp3.ResponseBody
+import okhttp3.*
 import okio.Buffer
 import java.io.IOException
 import java.net.URLDecoder
@@ -19,8 +16,17 @@ import java.nio.charset.Charset
  * @Date 2019/8/26 11:51
  * @description 拦截记录网络请求
  */
-class RecordInterceptor(internal val context: Context) : Interceptor {
+class RecordInterceptor : Interceptor {
+    internal val context: Context
+    private val callback:OnDecryptCallback?
     private val UTF8 = Charset.forName("UTF-8")
+
+    constructor(context: Context):this(context,null)
+
+    constructor(context: Context,callback:OnDecryptCallback?) {
+        this.context = context
+        this.callback = callback
+    }
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response? {
@@ -28,11 +34,11 @@ class RecordInterceptor(internal val context: Context) : Interceptor {
         val url = request.url().url().toString()
 
         //忽略拦截url
-        if (DebugTools.ignoreUrls.indexOf(url) != -1){
+        if (DebugTools.ignoreUrls.indexOf(url) != -1) {
             return chain.proceed(request)
         }
-        DebugTools.ignoreUrls.forEach{ignoreUrl ->
-            if (url.contains(ignoreUrl)){
+        DebugTools.ignoreUrls.forEach { ignoreUrl ->
+            if (url.contains(ignoreUrl)) {
                 return chain.proceed(request)
             }
         }
@@ -40,6 +46,7 @@ class RecordInterceptor(internal val context: Context) : Interceptor {
         val startMillis = System.currentTimeMillis()
         val requestTable = RequestTable()
         val requestBodyStr = bodyToString(request)
+        val decryptRequestBodyStr = callback?.onRequestBodyDecrypt(requestBodyStr)
         val method = request.method()
         val requestHeaders = request.headers()
         requestTable.method = method
@@ -49,6 +56,7 @@ class RecordInterceptor(internal val context: Context) : Interceptor {
         requestTable.url = url
         requestTable.requestHeader = requestHeaders?.toString()
         requestTable.requestBody = requestBodyStr
+        requestTable.decryptRequestBody = decryptRequestBodyStr
         requestTable.code = 0
         requestTable.sentRequestAtMillis = startMillis
         requestTable.receivedResponseAtMillis = 0
@@ -59,6 +67,7 @@ class RecordInterceptor(internal val context: Context) : Interceptor {
             var responseBody = response.body()
             val endMillis = System.currentTimeMillis()
             val responseBodyStr = responseBody?.string()
+            var decryptResponseBodyStr = callback?.onResponseBodyDecrypt(responseBodyStr)
             val contentLength = responseBody?.contentLength()
             val mediaType = responseBody?.contentType()
             val responseHeaders = response.headers()
@@ -73,15 +82,18 @@ class RecordInterceptor(internal val context: Context) : Interceptor {
 
             requestTable.code = code.toLong()
             requestTable.contentLength =
-                if (contentLength == -1L) (responseBodyStr?.toByteArray()?.size ?: 0) * 1L else contentLength
+                if (contentLength == -1L) (responseBodyStr?.toByteArray()?.size
+                    ?: 0) * 1L else contentLength
+            requestTable.decryptContentLength = decryptResponseBodyStr?.toByteArray()?.size?.toLong()
             requestTable.responseHeader = responseHeaders?.toString()
             requestTable.mediaType = mediaType?.toString()
             requestTable.responseBody = responseBodyStr
+            requestTable.decryptResponseBody = decryptResponseBodyStr
             requestTable.sentRequestAtMillis = sentRequestAtMillis
             requestTable.receivedResponseAtMillis = receivedResponseAtMillis
             DatabaseUtils.putRequest(requestTable)
 
-            responseBody = ResponseBody.create(responseBody?.contentType(), responseBodyStr)
+            responseBody = ResponseBody.create(mediaType, responseBodyStr)
             return response.newBuilder().body(responseBody).build()
 //            return responseBuilder.build()
         } catch (e: Exception) {
@@ -96,9 +108,9 @@ class RecordInterceptor(internal val context: Context) : Interceptor {
                 if (requestTable.receivedResponseAtMillis!! != 0L) requestTable.receivedResponseAtMillis else System.currentTimeMillis()
             DatabaseUtils.putRequest(requestTable)
             throw e
-        }finally {
+        } finally {
 
-            Log.i("TAG","recordInterceptor finally")
+//            Log.i("TAG", "recordInterceptor finally")
         }
     }
 
@@ -131,6 +143,20 @@ class RecordInterceptor(internal val context: Context) : Interceptor {
             return "${(e.javaClass as Class).name} ${e.localizedMessage}"
         }
 
+    }
+
+    /**
+     * 解密回调
+     */
+    public interface OnDecryptCallback{
+        /**
+         * 请求body解密
+         */
+        fun onRequestBodyDecrypt(body:String):String
+        /**
+         * 结果body解密
+         */
+        fun onResponseBodyDecrypt(body:String?):String?
     }
 
 }

@@ -22,7 +22,7 @@ class DatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, DB_NAME, n
         /** 数据库名称 */
         private const val DB_NAME = "DebugDatabase"
         /** 数据库版本 */
-        private const val DB_VERSION = 12
+        private const val DB_VERSION = 13
         /** 单例 */
         private var INSTANCE: DatabaseOpenHelper? = null
 
@@ -193,6 +193,20 @@ class DatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, DB_NAME, n
     private fun databaseUpgradeTo12(db: SQLiteDatabase?) {
         databaseUpgradeTo9(db)
     }
+
+    /**
+     * RequestTable 添加解密前的字段
+     * [decryptContentLength,decryptRequestBody,decryptResponseBody]
+     */
+    private fun databaseUpgradeTo13(db: SQLiteDatabase?){
+        val addDecryptRequestBody = "ALTER TABLE ${RequestTableField.TABLE} ADD COLUMN ${RequestTableField.DECRYPT_REQUEST_BODY} TEXT"
+        db?.execSQL(addDecryptRequestBody)
+        val addDecryptResponseBody = "ALTER TABLE ${RequestTableField.TABLE} ADD COLUMN ${RequestTableField.DECRYPT_RESPONSE_BODY} TEXT"
+        db?.execSQL(addDecryptResponseBody)
+        val addDecryptContentLength = "ALTER TABLE ${RequestTableField.TABLE} ADD COLUMN ${RequestTableField.DECRYPT_CONTENT_LENGTH} INTEGER"
+        db?.execSQL(addDecryptContentLength)
+    }
+
     //</editor-fold>
 
 }

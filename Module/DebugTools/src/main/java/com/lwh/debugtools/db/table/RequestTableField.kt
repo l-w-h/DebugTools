@@ -35,14 +35,23 @@ object RequestTableField : BaseTableField(){
     /** 请求body */
     const val REQUEST_BODY = "requestBody"
 
+    /** 解密后的请求body */
+    const val DECRYPT_REQUEST_BODY = "decryptRequestBody"
+
     /** 响应body */
     const val RESPONSE_BODY = "responseBody"
+
+    /** 解密后的响应body */
+    const val DECRYPT_RESPONSE_BODY = "decryptResponseBody"
 
     /** 数据类型 */
     const val MEDIA_TYPE = "mediaType"
 
     /** 响应body大小 */
     const val CONTENT_LENGTH = "contentLength"
+
+    /** 解密后的响应body大小 */
+    const val DECRYPT_CONTENT_LENGTH = "decryptContentLength"
 
     /** 请求码 200 404 ... */
     const val CODE = "code"

@@ -15,6 +15,7 @@ data class ItemRequestDetailsHeaderModel(val request: RequestTable) : BaseItemMo
     var method: String? by MapDelegate(request.map)
     var mediaType: String? by MapDelegate(request.map)
     var contentLength: Long? by MapDelegate(request.map)
+    var decryptContentLength: Long? by MapDelegate(request.map)
     var code: Long? by MapDelegate(request.map)
     var sentRequestAtMillis: Long? by MapDelegate(request.map)
     var receivedResponseAtMillis: Long? by MapDelegate(request.map)
@@ -33,6 +34,10 @@ data class ItemRequestDetailsHeaderModel(val request: RequestTable) : BaseItemMo
 
     fun getContentLengthStr(): String {
         return UnitUtils.fileSize(if (contentLength != null) contentLength!!.toDouble() else 0.toDouble())
+    }
+
+    fun getDecryptContentLengthStr(): String {
+        return UnitUtils.fileSize(if (decryptContentLength != null) decryptContentLength!!.toDouble() else 0.toDouble())
     }
 
 }

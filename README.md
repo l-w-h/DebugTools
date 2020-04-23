@@ -5,8 +5,20 @@
 # 使用方法
 
 ### 1.添加依赖
+
+* 在项目build.gradle中添加
+    ```
+    allprojects {
+        repositories {
+            maven{ url 'https://dl.bintray.com/liwh/PublicMaven'}
+        }
+    }
+    ```
+* 在Module build.gradle中添加
+    ```
     debugImplementation "com.lwh.debug:DebugTools:DebugTools:2.1.9@aar"
     releaseImplementation "com.lwh.debug:DebugTools:DebugToolsNoOp:2.1.9@aar"
+    ```
 
 ### 2.添加代码
 

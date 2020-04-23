@@ -42,11 +42,11 @@ object ServiceUtils {
         val httpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
         httpClientBuilder.addNetworkInterceptor(DebugTools.getInstance().getRecordInterceptor(object :RecordInterceptor.OnDecryptCallback{
             override fun onRequestBodyDecrypt(body: String): String {
-                return "request body 解密数据"
+                return ""
             }
 
             override fun onResponseBodyDecrypt(body: String?): String? {
-                return "response body 解密数据"
+                return null
             }
         }))
             .connectTimeout(5, TimeUnit.SECONDS)

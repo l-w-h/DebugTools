@@ -84,7 +84,7 @@ class RecordInterceptor : Interceptor {
             requestTable.contentLength =
                 if (contentLength == -1L) (responseBodyStr?.toByteArray()?.size
                     ?: 0) * 1L else contentLength
-            requestTable.decryptContentLength = decryptResponseBodyStr?.toByteArray()?.size?.toLong()
+            requestTable.decryptContentLength = decryptResponseBodyStr?.toByteArray()?.size?.toLong() ?: 0L
             requestTable.responseHeader = responseHeaders?.toString()
             requestTable.mediaType = mediaType?.toString()
             requestTable.responseBody = responseBodyStr

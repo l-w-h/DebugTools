@@ -41,11 +41,11 @@ object ServiceUtils {
     private fun initOkHttpClient(url: String): OkHttpClient {
         val httpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
         httpClientBuilder.addNetworkInterceptor(DebugTools.getInstance().getRecordInterceptor(object :RecordInterceptor.OnDecryptCallback{
-            override fun onRequestBodyDecrypt(body: String): String {
-                return ""
+            override fun onRequestBodyDecrypt(url:String,body: String): String? {
+                return null
             }
 
-            override fun onResponseBodyDecrypt(body: String?): String? {
+            override fun onResponseBodyDecrypt(url:String,body: String?): String? {
                 return null
             }
         }))

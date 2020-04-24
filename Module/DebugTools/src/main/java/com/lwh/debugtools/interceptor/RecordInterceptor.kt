@@ -46,7 +46,7 @@ class RecordInterceptor : Interceptor {
         val startMillis = System.currentTimeMillis()
         val requestTable = RequestTable()
         val requestBodyStr = bodyToString(request)
-        val decryptRequestBodyStr = callback?.onRequestBodyDecrypt(requestBodyStr)
+        val decryptRequestBodyStr = callback?.onRequestBodyDecrypt(url,requestBodyStr)
         val method = request.method()
         val requestHeaders = request.headers()
         requestTable.method = method
@@ -67,7 +67,7 @@ class RecordInterceptor : Interceptor {
             var responseBody = response.body()
             val endMillis = System.currentTimeMillis()
             val responseBodyStr = responseBody?.string()
-            var decryptResponseBodyStr = callback?.onResponseBodyDecrypt(responseBodyStr)
+            var decryptResponseBodyStr = callback?.onResponseBodyDecrypt(url,responseBodyStr)
             val contentLength = responseBody?.contentLength()
             val mediaType = responseBody?.contentType()
             val responseHeaders = response.headers()
@@ -152,11 +152,11 @@ class RecordInterceptor : Interceptor {
         /**
          * 请求body解密
          */
-        fun onRequestBodyDecrypt(body:String):String
+        fun onRequestBodyDecrypt(url:String,body:String):String?
         /**
          * 结果body解密
          */
-        fun onResponseBodyDecrypt(body:String?):String?
+        fun onResponseBodyDecrypt(url:String,body:String?):String?
     }
 
 }

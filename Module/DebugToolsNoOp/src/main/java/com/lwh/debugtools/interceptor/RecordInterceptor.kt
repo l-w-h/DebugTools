@@ -31,10 +31,10 @@ class RecordInterceptor : Interceptor {
         /**
          * 请求body解密
          */
-        fun onRequestBodyDecrypt(body:String):String
+        fun onRequestBodyDecrypt(url:String,body:String):String?
         /**
          * 结果body解密
          */
-        fun onResponseBodyDecrypt(body:String?):String?
+        fun onResponseBodyDecrypt(url:String,body:String?):String?
     }
 }

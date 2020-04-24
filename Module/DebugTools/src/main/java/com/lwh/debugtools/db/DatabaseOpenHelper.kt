@@ -62,7 +62,10 @@ class DatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, DB_NAME, n
             RequestTableField.CODE to INTEGER,
             RequestTableField.SENT_REQUEST_AT_MILLIS to INTEGER,
             RequestTableField.RECEIVED_RESPONSE_AT_MILLIS to INTEGER,
-            RequestTableField.ERROR_MESSAGE to TEXT
+            RequestTableField.ERROR_MESSAGE to TEXT,
+            RequestTableField.DECRYPT_CONTENT_LENGTH to INTEGER,
+            RequestTableField.DECRYPT_RESPONSE_BODY to TEXT,
+            RequestTableField.DECRYPT_REQUEST_BODY to TEXT
         )
         databaseUpgradeTo2(db)
         databaseUpgradeTo7(db)

@@ -16,8 +16,8 @@
     ```
 * 在Module build.gradle中添加
     ```
-    debugImplementation "com.lwh.debug:DebugTools:DebugTools:2.1.9@aar"
-    releaseImplementation "com.lwh.debug:DebugTools:DebugToolsNoOp:2.1.9@aar"
+    debugImplementation "com.lwh.debug:DebugTools:DebugTools:2.2.1@aar"
+    releaseImplementation "com.lwh.debug:DebugTools:DebugToolsNoOp:2.2.1@aar"
     ```
 
 ### 2.添加代码

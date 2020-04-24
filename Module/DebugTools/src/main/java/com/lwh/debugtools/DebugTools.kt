@@ -259,7 +259,7 @@ class DebugTools private constructor() {
      * 保存log打印信息 Verbose
      */
     fun logV(tag: String, content: String) {
-        logV(tag, content, 0)
+        log(tag, content, "Verbose",0)
     }
 
     /**
@@ -273,7 +273,7 @@ class DebugTools private constructor() {
      * 保存log打印信息 Debug
      */
     fun logD(tag: String, content: String) {
-        logD(tag, content, 0)
+        log(tag, content, "Debug",0)
     }
 
     /**
@@ -287,7 +287,7 @@ class DebugTools private constructor() {
      * 保存log打印信息 Info
      */
     fun logI(tag: String, content: String) {
-        logI(tag, content, 0)
+        log(tag, content, "Info",0)
     }
 
     /**
@@ -301,7 +301,7 @@ class DebugTools private constructor() {
      * 保存log打印信息 Warn
      */
     fun logW(tag: String, content: String) {
-        logW(tag, content, 0)
+        log(tag, content, "Warn",0)
     }
 
     /**
@@ -315,7 +315,7 @@ class DebugTools private constructor() {
      * 保存log打印信息 Error
      */
     fun logE(tag: String, content: String) {
-        logE(tag, content, 0)
+        log(tag, content, "Error",0)
     }
 
     /**

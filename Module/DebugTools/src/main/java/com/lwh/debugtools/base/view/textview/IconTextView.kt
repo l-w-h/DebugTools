@@ -4,10 +4,9 @@ import android.content.Context
 import android.graphics.Typeface
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatCheckedTextView
-import androidx.appcompat.widget.AppCompatTextView
 import com.lwh.debugtools.R
 
-const val DEFAULT_FONT_PATH = "iconfont/iconfont.ttf"
+const val DEFAULT_FONT_PATH = "iconfont/DT_iconfont.ttf"
 
 /**
  * @author lwh

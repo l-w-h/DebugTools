@@ -16,8 +16,8 @@
     ```
 * 在Module build.gradle中添加
     ```
-    debugImplementation "com.lwh.debug:DebugTools:DebugTools:2.2.1@aar"
-    releaseImplementation "com.lwh.debug:DebugTools:DebugToolsNoOp:2.2.1@aar"
+    debugImplementation "com.lwh.debug:DebugTools:DebugTools:2.3.0@aar"
+    releaseImplementation "com.lwh.debug:DebugTools:DebugToolsNoOp:2.3.0@aar"
     ```
 
 ### 2.添加代码
@@ -34,21 +34,43 @@
                             |${throwable.message}""".trimMargin(),Toast.LENGTH_SHORT).show()
                     }
         
-                }).addIgnoreUrl("app/system/downApk")
+                })
     ```
     
 * 在初始化网络请求时添加如下代码
     
     ```
         val httpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
-        httpClientBuilder.addNetworkInterceptor(DebugTools.getInstance().getRecordInterceptor(object :RecordInterceptor.OnDecryptCallback{
-                    override fun onRequestBodyDecrypt(body: String): String {
-                        return "request body 解密数据"
-                    }
+        httpClientBuilder.addNetworkInterceptor(DebugTools.getInstance().getRecordInterceptor(object :RecordInterceptor.OnInterceptorCallbackImpl(){
+        /**
+         * 是否解析请求body
+         */
+        fun isAnalyzeRequestBody(url: String):Boolean{return true}
+        /**
+         * 是否解析返回body
+         */
+        fun isAnalyzeResponseBody(url: String):Boolean{return true}
+        /**
+         * 是否加密请求body
+         */
+        fun isEncryptRequestBody(url: String):Boolean{return false}
+        /**
+         * 是否解密返回body
+         */
+        fun isDecryptResponseBody(url: String):Boolean{return false}
+        /**
+         * 请求body加密
+         */
+        fun onRequestBodyEncrypt(url:String,body:String?):String?{return body}
+        /**
+         * 返回body解密
+         */
+        fun onResponseBodyDecrypt(url:String,body:String?):String?{return ""}
 
-                    override fun onResponseBodyDecrypt(body: String?): String? {
-                        return "response body 解密数据"
-                    }
+        /**
+         * 忽略url
+         */
+        fun isIgnoreUrl(url:String):Boolean{return false}
                 }))
     ```
 
@@ -67,5 +89,4 @@
   |detachDebugView|activity：当前显示页面|手动移除DebugView|
   |setDebugViewListener|magnetViewListener：DebugView点击移除监听，默认实现|设置DebugView点击移除监听|
   |getRecordInterceptor|callback：提供解密body方法，默认无|获取网络拦截器|
-  |addIgnoreUrl|url:需要忽略拦截的url，例如下载文件的url需要忽略，否在可能卡死|添加忽略url|
   |logV，logD，logI<br>logW，logE|tag：tag<br>content：内容<br>jumpStack：储存打印数据时，获取当前调用任务堆栈信息，需要跳过的堆栈数|将调试log保存到log列表|

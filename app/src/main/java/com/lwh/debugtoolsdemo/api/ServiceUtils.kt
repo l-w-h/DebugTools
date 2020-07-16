@@ -1,11 +1,10 @@
 package com.lwh.debugtoolsdemo.api
 
+import android.content.Context
+import android.os.Build
 import com.lwh.debugtools.DebugTools
 import com.lwh.debugtools.interceptor.RecordInterceptor
-import okhttp3.CipherSuite
-import okhttp3.ConnectionSpec
-import okhttp3.OkHttpClient
-import okhttp3.TlsVersion
+import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -26,7 +25,8 @@ import javax.net.ssl.X509TrustManager
  */
 object ServiceUtils {
 
-    val BASE_URL = "http://wap-pre.cwhisky.com/#";
+    val BASE_URL = "http://192.168.0.103:8090/";
+
     private val HTTP_CLIENT = initOkHttpClient(BASE_URL)
 
     fun <T> getApi(clazz:Class<T>): T{
@@ -40,15 +40,19 @@ object ServiceUtils {
 
     private fun initOkHttpClient(url: String): OkHttpClient {
         val httpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
-        httpClientBuilder.addNetworkInterceptor(DebugTools.getInstance().getRecordInterceptor(object :RecordInterceptor.OnDecryptCallback{
-            override fun onRequestBodyDecrypt(url:String,body: String): String? {
-                return null
-            }
+        httpClientBuilder
+            .addInterceptor(object:Interceptor{
+                override fun intercept(chain: Interceptor.Chain): Response {
+                    var request = chain.request()
 
-            override fun onResponseBodyDecrypt(url:String,body: String?): String? {
-                return null
-            }
-        }))
+                    //添加头信息
+                    val requestBuilder = request.newBuilder()
+                    requestBuilder.addHeader("Content-Type", "application/json")
+                    request = requestBuilder.build()
+
+                    return chain.proceed(request)
+                }
+            }).addNetworkInterceptor(DebugTools.getInstance().getRecordInterceptor(object :RecordInterceptor.OnInterceptorCallbackImpl(){}))
             .connectTimeout(5, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
 

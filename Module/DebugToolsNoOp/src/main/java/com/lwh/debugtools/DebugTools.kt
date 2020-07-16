@@ -93,7 +93,10 @@ class DebugTools private constructor() {
     /**
      * 开启崩溃拦截
      */
-    fun startWhitecrashIntercept(interceptAll: Boolean = true, onCrashListener: OnCrashListener? = null): DebugTools {
+    fun startWhitecrashIntercept(
+        interceptAll: Boolean = true,
+        onCrashListener: OnCrashListener? = null
+    ): DebugTools {
 
         return this
     }
@@ -154,14 +157,9 @@ class DebugTools private constructor() {
     /**
      * 获取网络拦截器
      */
-    fun getRecordInterceptor(callback: RecordInterceptor.OnDecryptCallback?): Interceptor = RecordInterceptor(context,callback)
+    fun getRecordInterceptor(callback: RecordInterceptor.OnInterceptorCallback): Interceptor =
+        RecordInterceptor(context, callback)
 
-    /**
-     * 添加忽略url
-     */
-    fun addIgnoreUrl(url:String): DebugTools{
-        return this
-    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="log">

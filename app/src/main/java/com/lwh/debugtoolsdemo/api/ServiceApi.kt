@@ -1,6 +1,8 @@
 package com.lwh.debugtoolsdemo.api
 
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import rx.Observable
 
 /**
@@ -11,6 +13,8 @@ import rx.Observable
 interface ServiceApi {
 
 
-    @GET("api/config")
-    fun homepageHead(): Observable<Any>
+    @GET("xxx/xxx/xxx/xxx")
+    fun get(): Observable<Map<String,Any>>
+    @POST("xxx/xxx/xxx")
+    fun save(@Body map:Map<String,String>): Observable<Map<String,Any>>
 }

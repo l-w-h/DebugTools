@@ -2,7 +2,6 @@ package com.lwh.debugtools
 
 import android.app.Activity
 import android.app.Application
-import android.content.Context
 import android.os.Build
 import android.text.TextUtils
 import androidx.annotation.DrawableRes
@@ -55,11 +54,6 @@ class DebugTools private constructor() {
          * 是否打开
          */
         var open = false
-
-        /**
-         * 忽略不拦截url
-         */
-        val ignoreUrls = ArrayList<String>()
 
         fun getInstance(application: Application = context): DebugTools {
             if (INSTANCE == null) {
@@ -243,15 +237,8 @@ class DebugTools private constructor() {
     /**
      * 获取网络拦截器
      */
-    fun getRecordInterceptor(callback: RecordInterceptor.OnDecryptCallback?): Interceptor = RecordInterceptor(context,callback)
+    fun getRecordInterceptor(callback: RecordInterceptor.OnInterceptorCallback): Interceptor = RecordInterceptor(context,callback)
 
-    /**
-     * 添加忽略url
-     */
-    fun addIgnoreUrl(url:String): DebugTools{
-        ignoreUrls.add(url)
-        return this
-    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="log">

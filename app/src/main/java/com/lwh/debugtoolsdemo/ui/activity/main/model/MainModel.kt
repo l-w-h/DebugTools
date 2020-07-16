@@ -2,6 +2,7 @@ package com.lwh.debugtoolsdemo.ui.activity.main.model
 
 import com.lwh.debugtoolsdemo.api.ServiceApi
 import com.lwh.debugtoolsdemo.api.ServiceUtils
+import org.json.JSONObject
 import rx.Observer
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -15,16 +16,18 @@ class MainModel {
 
     fun request(success: (Any?) -> Unit, fail: (Throwable?) -> Unit) {
         ServiceUtils.getApi(ServiceApi::class.java)
-            .homepageHead()
+            .get()
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<Any> {
+            .subscribe(object : Observer<Map<String,Any>> {
                 override fun onError(e: Throwable?) {
                     fail(e)
                 }
 
-                override fun onNext(t: Any?) {
-                    success(t)
+                override fun onNext(t: Map<String,Any>) {
+                    val data = t.get("data")
+                    success(data)
+                    save(data.toString(),success)
                 }
 
                 override fun onCompleted() {
@@ -35,4 +38,26 @@ class MainModel {
     }
 
 
+    fun save(data:String,success: (Any?) -> Unit){
+        ServiceUtils.getApi(ServiceApi::class.java)
+            .save(mapOf("xxx" to data, "xxx" to data))
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<Map<String,Any>> {
+                override fun onError(e: Throwable?) {
+
+                }
+
+                override fun onNext(t: Map<String,Any>) {
+                    val data = t.get("data")
+                    success(data)
+
+                }
+
+                override fun onCompleted() {
+
+                }
+
+            })
+    }
 }

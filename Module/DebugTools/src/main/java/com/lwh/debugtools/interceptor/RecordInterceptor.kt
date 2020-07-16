@@ -1,15 +1,12 @@
 package com.lwh.debugtools.interceptor
 
 import android.content.Context
-import android.util.Log
-import com.lwh.debugtools.DebugTools
+import android.text.TextUtils
 import com.lwh.debugtools.db.DatabaseUtils
 import com.lwh.debugtools.db.table.RequestTable
 import okhttp3.*
 import okio.Buffer
 import java.io.IOException
-import java.net.URLDecoder
-import java.nio.charset.Charset
 
 /**
  * @author lwh
@@ -18,35 +15,39 @@ import java.nio.charset.Charset
  */
 class RecordInterceptor : Interceptor {
     internal val context: Context
-    private val callback:OnDecryptCallback?
-    private val UTF8 = Charset.forName("UTF-8")
+    private val callback: OnInterceptorCallback
 
-    constructor(context: Context):this(context,null)
+    constructor(context: Context) : this(context, OnInterceptorCallbackImpl())
 
-    constructor(context: Context,callback:OnDecryptCallback?) {
+    constructor(context: Context, callback: OnInterceptorCallback) {
         this.context = context
         this.callback = callback
     }
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response? {
-        val request = chain.request()
+        var request = chain.request()
+        val requestBuilder = request.newBuilder()
         val url = request.url().url().toString()
 
         //忽略拦截url
-        if (DebugTools.ignoreUrls.indexOf(url) != -1) {
+        if (callback.isIgnoreUrl(url)) {
             return chain.proceed(request)
-        }
-        DebugTools.ignoreUrls.forEach { ignoreUrl ->
-            if (url.contains(ignoreUrl)) {
-                return chain.proceed(request)
-            }
         }
 
         val startMillis = System.currentTimeMillis()
         val requestTable = RequestTable()
-        val requestBodyStr = bodyToString(request)
-        val decryptRequestBodyStr = callback?.onRequestBodyDecrypt(url,requestBodyStr)
+        //是否解析接口
+        val isAnalyzeRequestBody = callback.isAnalyzeRequestBody(url)
+        //是否加密接口
+        val isEncryptRequestBody = callback.isEncryptRequestBody(url)
+        val requestBodyStr =
+            if (isAnalyzeRequestBody || isEncryptRequestBody) bodyToString(request.body()) else "不支持查看当前内容"
+        //加密请求body
+        val encryptRequestBodyStr = if (isEncryptRequestBody) callback.onRequestBodyEncrypt(
+            url,
+            requestBodyStr
+        ) else requestBodyStr
         val method = request.method()
         val requestHeaders = request.headers()
         requestTable.method = method
@@ -55,19 +56,45 @@ class RecordInterceptor : Interceptor {
         requestTable.query = request.url().query()
         requestTable.url = url
         requestTable.requestHeader = requestHeaders?.toString()
-        requestTable.requestBody = requestBodyStr
-        requestTable.decryptRequestBody = decryptRequestBodyStr
+        requestTable.requestBody = encryptRequestBodyStr
+        requestTable.decryptRequestBody = if (isEncryptRequestBody) requestBodyStr else ""
         requestTable.code = 0
         requestTable.sentRequestAtMillis = startMillis
         requestTable.receivedResponseAtMillis = 0
 
+        //替换body内容
+        if (TextUtils.equals(
+                request.method(),
+                "POST"
+            ) && (isAnalyzeRequestBody || isEncryptRequestBody)
+        ) {
+            val newBody: RequestBody = RequestBody.create(
+                MediaType.parse("application/json"),
+                encryptRequestBodyStr
+            )
+            requestBuilder.post(newBody)
+            requestBuilder.removeHeader("Content-Length")
+            requestBuilder.addHeader(
+                "Content-Length",
+                encryptRequestBodyStr?.length?.toString() ?: "-1"
+            )
+            request = requestBuilder.build()
+        }
 
         try {
             val response = chain.proceed(request)
             var responseBody = response.body()
             val endMillis = System.currentTimeMillis()
-            val responseBodyStr = responseBody?.string()
-            var decryptResponseBodyStr = callback?.onResponseBodyDecrypt(url,responseBodyStr)
+            //是否解析接口
+            val isAnalyzeResponseBody = callback.isAnalyzeResponseBody(url)
+            //是否解密接口
+            val isDecryptResponseBody = callback.isDecryptResponseBody(url)
+            val responseBodyStr =
+                if (isAnalyzeResponseBody || isDecryptResponseBody) responseBody?.string() else "不支持查看当前内容"
+            var decryptResponseBodyStr = if (isDecryptResponseBody) callback.onResponseBodyDecrypt(
+                url,
+                responseBodyStr
+            ) else ""
             val contentLength = responseBody?.contentLength()
             val mediaType = responseBody?.contentType()
             val responseHeaders = response.headers()
@@ -81,21 +108,24 @@ class RecordInterceptor : Interceptor {
             val protocol = response.protocol()
 
             requestTable.code = code.toLong()
-            requestTable.contentLength =
-                if (contentLength == -1L) (responseBodyStr?.toByteArray()?.size
-                    ?: 0) * 1L else contentLength
-            requestTable.decryptContentLength = decryptResponseBodyStr?.toByteArray()?.size?.toLong() ?: 0L
-            requestTable.responseHeader = responseHeaders?.toString()
-            requestTable.mediaType = mediaType?.toString()
             requestTable.responseBody = responseBodyStr
             requestTable.decryptResponseBody = decryptResponseBodyStr
+            requestTable.contentLength =
+                if (contentLength == -1L) (requestTable.responseBody?.toByteArray()?.size
+                    ?: 0) * 1L else contentLength
+            requestTable.decryptContentLength =
+                requestTable.decryptResponseBody?.toByteArray()?.size?.toLong() ?: 0L
+            requestTable.responseHeader = responseHeaders?.toString()
+            requestTable.mediaType = mediaType?.toString()
             requestTable.sentRequestAtMillis = sentRequestAtMillis
             requestTable.receivedResponseAtMillis = receivedResponseAtMillis
             DatabaseUtils.putRequest(requestTable)
 
-            responseBody = ResponseBody.create(mediaType, responseBodyStr)
-            return response.newBuilder().body(responseBody).build()
-//            return responseBuilder.build()
+            if (isAnalyzeResponseBody || isDecryptResponseBody) {
+                responseBody = ResponseBody.create(mediaType, responseBodyStr)
+                return response.newBuilder().body(responseBody).build()
+            }
+            return response.newBuilder().build()
         } catch (e: Exception) {
             val stringBuilder = StringBuilder(e.javaClass.toString())
             e.stackTrace.forEach {
@@ -114,33 +144,50 @@ class RecordInterceptor : Interceptor {
         }
     }
 
+
+    /**
+     * Returns true if the body in question probably contains human readable text. Uses a small sample
+     * of code points to detect unicode control characters commonly used in binary file signatures.
+     */
+    fun isPlaintext(mediaType: MediaType?): Boolean {
+        if (mediaType == null) return false
+        if (mediaType.type() != null && mediaType.type() == "text") {
+            return true
+        }
+        var subtype = mediaType.subtype()
+        if (subtype != null) {
+            subtype = subtype.toLowerCase()
+            if (subtype.contains("x-www-form-urlencoded") ||
+                subtype.contains("json") ||
+                subtype.contains("xml") ||
+                subtype.contains("html")
+            ) //
+                return true
+        }
+        return false
+    }
+
     /**
      * RequestBody 转string
      */
-    private fun bodyToString(request: Request): String {
-        try {
-            val copy = request?.newBuilder().build()
+    private fun bodyToString(request: RequestBody?): String {
+        return try {
             val buffer = Buffer()
-            copy.body()!!.writeTo(buffer)
-            var charset: Charset? = UTF8
-            val contentType = copy.body()!!.contentType()
-            if (contentType != null) {
-                charset = contentType.charset(UTF8)
+            if (request != null) {
+                request.writeTo(buffer)
+            } else {
+                return ""
             }
-            return URLDecoder.decode(buffer.readString(charset), UTF8.name())
-//            val buffer = Buffer()
-//            if (request != null) {
-//                request.writeTo(buffer)
-//            } else {
-//                return ""
-//            }
-            return buffer.readUtf8()
+            buffer.readUtf8()
         } catch (e: IOException) {
-            return "did not work"
-        } catch (e: NullPointerException) {
-            return ""
+            //"did not work"
+            ""
+        } catch (e: OutOfMemoryError) {
+            e.localizedMessage
+            ""
         } catch (e: Exception) {
-            return "${(e.javaClass as Class).name} ${e.localizedMessage}"
+            e.localizedMessage
+            ""
         }
 
     }
@@ -148,15 +195,62 @@ class RecordInterceptor : Interceptor {
     /**
      * 解密回调
      */
-    public interface OnDecryptCallback{
+    interface OnInterceptorCallback {
         /**
-         * 请求body解密
+         * 是否解析请求body
          */
-        fun onRequestBodyDecrypt(url:String,body:String):String?
+        fun isAnalyzeRequestBody(url: String): Boolean
+
         /**
-         * 结果body解密
+         * 是否解析返回body
          */
-        fun onResponseBodyDecrypt(url:String,body:String?):String?
+        fun isAnalyzeResponseBody(url: String): Boolean
+
+        /**
+         * 是否加密请求body
+         */
+        fun isEncryptRequestBody(url: String): Boolean
+
+        /**
+         * 是否解密返回body
+         */
+        fun isDecryptResponseBody(url: String): Boolean
+
+        /**
+         * 请求body加密
+         */
+        fun onRequestBodyEncrypt(url: String, body: String?): String?
+
+        /**
+         * 返回body解密
+         */
+        fun onResponseBodyDecrypt(url: String, body: String?): String?
+
+        /**
+         * 忽略url
+         */
+        fun isIgnoreUrl(url: String): Boolean
+    }
+
+    open class OnInterceptorCallbackImpl : OnInterceptorCallback {
+        override fun isAnalyzeRequestBody(url: String): Boolean = true
+
+        override fun isAnalyzeResponseBody(url: String): Boolean = true
+
+        override fun isEncryptRequestBody(url: String): Boolean = false
+
+        override fun isDecryptResponseBody(url: String): Boolean = false
+
+        override fun onRequestBodyEncrypt(url: String, body: String?): String? {
+            return body
+        }
+
+        override fun onResponseBodyDecrypt(url: String, body: String?): String? {
+            return ""
+        }
+
+        override fun isIgnoreUrl(url: String): Boolean = false
+
     }
 
 }

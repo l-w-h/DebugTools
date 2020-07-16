@@ -63,8 +63,8 @@ class DTRequestDetailsActivity : RefreshActivity<BaseDiffCallBack>() {
     override fun init() {
         headerManager?.apply {
             title = "Request Details"
-            setFuncAVisible(View.VISIBLE)
-            setFuncBVisible(View.VISIBLE)
+            setFuncAText(R.string.icon_delete)
+            setFuncBText(R.string.icon_search)
             setFuncAVisible(View.VISIBLE)
             setFuncBVisible(View.VISIBLE)
 

@@ -61,7 +61,7 @@ class RecordInterceptor : Interceptor {
             requestBuilder.removeHeader("Content-Length")
             requestBuilder.addHeader(
                 "Content-Length",
-                encryptRequestBodyStr?.length?.toString() ?: "-1"
+                encryptRequestBodyStr?.toByteArray()?.size?.toString() ?: "-1"
             )
             request = requestBuilder.build()
         }
